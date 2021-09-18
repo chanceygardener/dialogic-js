@@ -1,0 +1,183 @@
+{
+    "name": "sample",
+    "schema": {
+        "0.0-testNpLex": {
+            "description": "Testint the capabilities of the Noun Phrase (Np) template",
+            "args": {
+                "test_entity": {
+                    "description": "An entity (output of semantic api's lexicalize path) for testing the Np template",
+                    "examples": [
+                        {
+                            "text": "the person who faked the moon landing",
+                            "entity_type": null,
+                            "pos": "NOUN",
+                            "root_word": "person",
+                            "requires_definite_determiner": true,
+                            "begins_with_vowel_sound": false,
+                            "np_modifiers": {
+                                "RC": [
+                                    "who faked the moon landing"
+                                ],
+                                "PP": []
+                            },
+                            "singular": "person who faked the moon landing",
+                            "singular_short": "person",
+                            "plural": "people who faked the moon landing",
+                            "plural_short": "people"
+                        }
+                    ]
+                }
+            }
+        },
+        "0.0-testNpLexBeginsWithVowel": {
+            "description": "Testint the capabilities of the Noun Phrase (Np) template",
+            "args": {
+                "test_entity": {
+                    "description": "An entity (output of semantic api's lexicalize path) for testing the Np template",
+                    "examples": [
+                        {
+    "text": "The executioner on the payroll",
+    "entity_type": null,
+    "pos": "NOUN",
+    "root_word": "executioner",
+    "requires_definite_determiner": true,
+    "begins_with_vowel_sound": true,
+    "np_modifiers": {
+        "RC": [],
+        "PP": [
+            "on the payroll"
+        ]
+    },
+    "singular": "executioner on the payroll",
+    "singular_short": "executioner",
+    "plural": "executioners on the payroll",
+    "plural_short": "executioners"
+}
+                    ]
+                }
+            }
+        },
+        
+        "0.0-testNpLexPerson": {
+            "description": "Testint the capabilities of the Noun Phrase (Np) template",
+            "args": {
+                "test_entity": {
+                    "description": "An entity (output of semantic api's lexicalize path) for testing the Np template",
+                    "examples": [
+                        {
+    "text": "Bob Ross",
+    "entity_type": "PERSON",
+    "pos": "PROPN",
+    "root_word": "Ross",
+    "requires_definite_determiner": false,
+    "begins_with_vowel_sound": false,
+    "np_modifiers": {
+        "RC": [],
+        "PP": []
+    },
+    "singular": "Bob Ross",
+    "plural": "Bob Ross"
+}
+                    ]
+                }
+            }
+        },
+        "0.0-basicList": {
+            "description": "A list template",
+            "args": {
+                "sequence": {
+                    "description": "The sequence to be formatted into natural language",
+                    "examples": [
+                        [
+                            "this",
+                            "that",
+                            "the other"
+                        ]
+                    ]
+                }
+            }
+        },
+        "testNullVar": {
+            "description": "A test template for the IsNull standard plugin",
+            "args": {
+                "test_variable": {
+                    "description": "A variable that may or may not be bull",
+                    "examples": [
+                        null,
+                        1
+                    ]
+                }
+            }
+        },
+        "testCompareDateTime": {
+            "description": "",
+            "args": {}
+        },
+        "testNot": {
+            "description": "",
+            "args": {}
+        },
+        "testThreadTouched": {
+            "description": "",
+            "args": {}
+        },
+        "FindYourThing": {
+            "args": {
+                "negated": {
+                    "type": "bool",
+                    "description": "A boolean value describing whether or not"
+                },
+                "item_name": {
+                    "type": "str"
+                },
+                "location": {
+                    "type": "str"
+                }
+            },
+            "description": "The user has asked the digital person to find something of theirs",
+            "content_blocks": {
+                "places_to_check": {
+                    "type": "options",
+                    "values": [
+                        "under the bed",
+                        "behind your back"
+                    ]
+                }
+            }
+        },
+        "0.0-testPassingWholeEnv": {
+            "description": "A test template to verify the behavior of the _env=$env call, which should pass the whole environment from the upper level template to the lower level one.",
+            "args": {
+                "firstValue": {
+                    "type": "str",
+                    "values": [
+                        "A teddy bear"
+                    ]
+                },
+                "secondValue": {
+                    "type": "str",
+                    "values": [
+                        "A cheese curdling machine"
+                    ]
+                }
+            }
+        },
+         "0.0-testPassingWholeEnvNonObj": {
+            "description": "A test template to verify the behavior of the _env=$env call in the case that an attempt is made to pass a non-object value to the lower env. It should fail",
+            "args": {
+                "firstValue": {
+                    "type": "str",
+                    "values": [
+                        "A teddy bear"
+                    ]
+                },
+                "secondValue": {
+                    "type": "str",
+                    "values": [
+                        "A cheese curdling machine"
+                    ]
+                }
+            }
+        }
+    }
+}

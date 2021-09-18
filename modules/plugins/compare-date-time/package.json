@@ -1,0 +1,11 @@
+{
+  "name": "compare-date-time",
+  "version": "1.0.0",
+  "description": "plugin for dialogic-js that allows comparison of two datetime strings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jade Fung <jade.fung@soulmachines.com>",
+  "license": "UNLICENSED"
+}

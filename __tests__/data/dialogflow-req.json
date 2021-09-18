@@ -1,0 +1,69 @@
+{
+  "responseId": "4ab3b759-1ef0-4db1-b47d-4d5a9ae5253e-d5092e1d",
+  "queryResult": {
+    "queryText": "in two days what day will it be",
+    "parameters": {
+      "weekday": "day",
+      "date-time": {
+        "startDateTime": "2020-09-09T11:12:16-07:00",
+        "endDateTime": "2020-09-11T11:12:16-07:00"
+      },
+      "time-relational": "how long until",
+      "test-arr": [1, 2, 3],
+      "test-bool": true
+    },
+    "allRequiredParamsPresent": true,
+    "fulfillmentMessages": [
+      {
+        "text": {
+          "text": [
+            ""
+          ]
+        }
+      }
+    ],
+    "outputContexts": [
+      {
+        "name": "projects/day-of-the-week-snwd/agent/sessions/1fbb040d-a028-2fd5-8aa8-fa76896b2ea2/contexts/get-day-of-week",
+        "lifespanCount": 5,
+        "parameters": {
+          "weekday": "day",
+          "weekday.original": "day",
+          "date-time": {
+            "startDateTime": "2020-09-09T11:12:16-07:00",
+            "endDateTime": "2020-09-11T11:12:16-07:00"
+          },
+          "date-time.original": "two days",
+          "time-relational": "how long until",
+          "time-relational.original": "will"
+        }
+      },
+      {
+        "name": "projects/day-of-the-week-snwd/agent/sessions/1fbb040d-a028-2fd5-8aa8-fa76896b2ea2/contexts/__system_counters__",
+        "parameters": {
+          "no-input": 0,
+          "no-match": 0,
+          "weekday": "day",
+          "weekday.original": "day",
+          "date-time": {
+            "startDateTime": "2020-09-09T11:12:16-07:00",
+            "endDateTime": "2020-09-11T11:12:16-07:00"
+          },
+          "date-time.original": "two days",
+          "time-relational": "how long until",
+          "time-relational.original": "will"
+        }
+      }
+    ],
+    "intent": {
+      "name": "projects/day-of-the-week-snwd/agent/intents/4ccce072-7410-41b0-a47a-1e768b1c1770",
+      "displayName": "day.query"
+    },
+    "intentDetectionConfidence": 1,
+    "languageCode": "en"
+  },
+  "originalDetectIntentRequest": {
+    "payload": {}
+  },
+  "session": "projects/day-of-the-week-snwd/agent/sessions/1fbb040d-a028-2fd5-8aa8-fa76896b2ea2"
+}

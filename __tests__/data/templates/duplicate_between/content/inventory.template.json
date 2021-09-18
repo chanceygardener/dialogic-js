@@ -1,0 +1,84 @@
+{
+    "name": "inventory",
+    "templates": {
+        "InventoryQuery": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "It [_seemSynset] we've [_onlyIfOne num_items=$num_items] got ($num_items) [_countNp num_items=$num_items singular_form=$item_singular plural_form=$item_plural] in stock",
+                    "conditions": [
+                        "$num_items > 0"
+                    ]
+                },
+                {
+                    "text": "Sorry to say it [_seemSynset] we don't have any $item_plural in stock."
+                }
+            ]
+        },
+        "_seemSynset": {
+            "forms": [
+                {
+                    "text": "seems [_maybeLikeOrThat]"
+                },
+                {
+                    "text": "looks like"
+                },
+                {
+                    "text": "appears [_maybeThat]"
+                }
+            ]
+        },
+
+        "_maybeLikeOrThat": {
+            "forms": [
+                {
+                    "text": "like"
+                },
+                {
+                    "text": "that"
+                },
+                {
+                    "text": ""
+                }
+            ]
+        },
+        "_maybeThat": {
+            "forms": [
+                {
+                    "text": "that"
+                },
+                {
+                    "text": ""
+                }
+            ]
+        },
+        "_onlyIfOne": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "only",
+                    "conditions": [
+                        "$num_items == 2"
+                    ]
+                },
+                {
+                    "text": ""
+                }
+            ]
+        },
+        "_countNp": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "$num_items $singular_form",
+                    "conditions": [
+                        "$num_items == 1"
+                    ]
+                },
+                {
+                    "text": "$num_items $plural_form"
+                }
+            ]
+        }
+    } 
+}

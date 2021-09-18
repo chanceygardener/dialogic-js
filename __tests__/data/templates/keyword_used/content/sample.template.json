@@ -1,0 +1,78 @@
+{
+    "name": "sample",
+    "templates": {
+        "testImport": {
+            "forms": [
+                {
+                    "text": "I come from another domain!"
+                }
+            ]
+        },
+        "import": {
+            "forms": [
+                {
+                    "text": "My name is forbidden"
+                }
+            ]
+        },
+        "FindYourThing": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "I [_doOrDoNot val=$negated] know where to find your [_collection item_name=$item_name], [_locationOrFail location=$location].",
+                    "conditions": [
+                        "{Set $loc} && !$negated"
+                    ],
+                    "setVal": [
+                        {
+                            "type": "string",
+                            "value": "location_unknown"
+                        }
+                    ]
+                }
+            ]
+        },
+        "_doOrDoNot": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "don't",
+                    "conditions": [
+                        "$val"
+                    ]
+                },
+                {
+                    "text": "do",
+                    "conditions": []
+                }
+            ]
+        },
+        "_collection": {
+            "switch": false,
+            "forms": [
+                {
+                    "text": "$item_name",
+                    "conditions": []
+                },
+                {
+                    "text": "beloved {item_name}",
+                    "conditions": []
+                }
+            ]
+        },
+        "_locationOrFail": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "but I can't tell you where right now.",
+                    "condition": [
+                        "$location == 'FAIL'"
+                    ]
+                },
+                {
+                    "text": "it's at {location}"
+                }
+            ]
+        }
+    }
+}

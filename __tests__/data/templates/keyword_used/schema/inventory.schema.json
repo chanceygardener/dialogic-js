@@ -1,0 +1,33 @@
+{
+	"name": "inventory",
+	"schema": {
+		"ImportTest": {
+			"args": {},
+			"description": "This template simply calls another that has been imported from the sample domain. It's here to test the functionality of the import statement"
+		},
+		"ImportTestToFail": {
+			"args": {},
+			"description": "This template simply calls another that has not been imported from the sample domain. It's here to test the functionality of the import statement"
+		},
+		"InventoryQuery": {
+			"args": {
+				"num_items": {
+					"type": "num",
+					"description": "The number of specified items that can be found in the inventory",
+					"required": true
+				},
+				"item_singular": {
+					"type": "str",
+					"description": "the singular form of the item in question",
+					"required": false
+				},
+				"item_plural": { 
+						"type":"str",
+						"description": "the plural form of the item in question",
+						"required": true
+				}
+			},
+			"description": "The user is asking how many of a certain item exists in the inventory."
+		}
+	}
+}

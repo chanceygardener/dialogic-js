@@ -1,0 +1,29 @@
+{
+	"name": "sample",
+	"schema": {
+		"FindYourThing": {
+			"args": {
+				"negated": {
+					"type": "bool",
+					"description": "A boolean value describing whether or not"
+				},
+				"item_name": {
+					"type": "str"
+				},
+				"location": { 
+						"type":"str"
+				}
+			},
+			"description": "The user has asked the digital person to find something of theirs",
+			"content_blocks": {
+				"places_to_check": {
+					"type": "options",
+					"values": [
+						"under the bed",
+						"behind your back"
+					]
+				}
+			}
+		}
+	}
+}

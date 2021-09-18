@@ -1,0 +1,36 @@
+name: mirror docs to confluence
+
+on:
+  push:
+    branches: [ staging, master ]
+
+jobs:
+  mirror_docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # setup nodejs for creating docs
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      # setup python for pushing docs to Confluence
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # install node dependencies
+      - run: npm ci
+      # create JSDoc w/ markdown output 
+      - run: npm run docs
+      # clone md2conf repo
+      - run: git clone https://github.com/RittmanMead/md_to_conf.git
+      # install python deps
+      - run: pip3 install -r md_to_conf/requirements.txt
+      # run confluence script w/ credentials
+      - run: python3 md_to_conf/md2conf.py docs.md CS -a "Software Projects"
+        env: # Or as an environment variable
+          CONFLUENCE_API_KEY: ${{ secrets.CONFLUENCE_API_KEY }}
+          CONFLUENCE_ORGNAME: ${{ secrets.CONFLUENCE_ORGNAME }}
+          CONFLUENCE_USERNAME: ${{ secrets.CONFLUENCE_USERNAME }}

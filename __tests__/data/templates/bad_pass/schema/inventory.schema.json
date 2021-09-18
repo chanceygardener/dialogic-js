@@ -1,0 +1,49 @@
+{
+	"name": "inventory",
+	"schema": {
+		"InventoryQuery": {
+			"args": {
+				"num_items": {
+					"type": "num",
+					"description": "The number of specified items that can be found in the inventory",
+					"required": true
+				},
+				"item_singular": {
+					"type": "str",
+					"description": "the singular form of the item in question",
+					"required": false
+				},
+				"item_plural": { 
+						"type":"str",
+						"description": "the plural form of the item in question",
+						"required": true
+				}
+			},
+			"description": "The user is asking how many of a certain item exists in the inventory."
+		},
+		"OpenHoursBound": {
+			"args": {
+				"refer_open": {
+					"type": "bool",
+					"description": "True if the user is asking the question referring to the opening time, false if they are referring to the closing time",
+					"required": true
+				},
+				"time": {
+					"type": "str",
+					"description": "The time the store is opening, expressed as a string",
+					"required": true
+				},
+				"date": {
+					"type": "str",
+					"description": "The date in question, expressed as a string",
+					"required": true
+				},
+				"is_certain": {
+					"type": "bool",
+					"description": "True if the agent has confirmation that this is the case today, otherwise we assume the schedule is inferred by 'usual' hours, and include a disclaimer in the response text",
+					"required": true
+				}
+			}
+		}
+	}
+}

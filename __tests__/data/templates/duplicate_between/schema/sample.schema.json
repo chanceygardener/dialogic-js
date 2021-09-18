@@ -1,0 +1,49 @@
+{
+	"name": "sample",
+	"schema": {
+		"FindYourThing": {
+			"args": {
+				"negated": {
+					"type": "bool",
+					"description": "A boolean value describing whether or not"
+				},
+				"item_name": {
+					"type": "str"
+				},
+				"location": { 
+						"type":"str"
+				}
+			},
+			"description": "The user has asked the digital person to find something of theirs",
+			"content_blocks": {
+				"places_to_check": {
+					"type": "options",
+					"values": [
+						"under the bed",
+						"behind your back"
+					]
+				}
+			}
+		},
+		"InventoryQuery": {
+			"args": {
+				"num_items": {
+					"type": "num",
+					"description": "The number of specified items that can be found in the inventory",
+					"required": true
+				},
+				"item_singular": {
+					"type": "str",
+					"description": "the singular form of the item in question",
+					"required": false
+				},
+				"item_plural": { 
+						"type":"str",
+						"description": "the plural form of the item in question",
+						"required": true
+				}
+			},
+			"description": "The user is asking how many of a certain item exists in the inventory."
+		}
+	}
+}

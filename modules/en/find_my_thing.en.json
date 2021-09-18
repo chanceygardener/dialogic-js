@@ -1,0 +1,69 @@
+{
+    "FindYourThing": {
+        "switch": true,
+        "args": [
+            "negated",
+            "item_name",
+            "location"
+        ],
+        "forms": [
+            {
+                "text": "I [_doOrDoNot val=$negated] know where to find your [_collection item_name=$item_name], [_locationOrFail location=$location].",
+                "conditions": [
+                    "{Set $loc} && !$negated"
+                ]
+            }
+        ]
+    },
+    "_doOrDoNot": {
+        "switch": true,
+        "args": [
+            "val"
+        ],
+        "forms": [
+            {
+                "text": "don't",
+                "conditions": [
+                    "$negated"
+                ]
+            },
+            {
+                "text": "do",
+                "conditions": []
+            }
+        ]
+    },
+    "_collection": {
+        "switch": false,
+        "args": [
+            "item_name"
+        ],
+        "forms": [
+            {
+                "text": "$item_name",
+                "conditions": []
+            },
+            {
+                "text": "beloved {item_name}",
+                "conditions": []
+            }
+        ]
+    },
+    "_locationOrFail": {
+        "switch": true,
+        "args": [
+            "location"
+        ],
+        "forms": [
+            {
+                "text": "but I can't tell you where right now.",
+                "condition": [
+                    "$location == 'FAIL'"
+                ]
+            },
+            {
+                "text": "it's at {location}"
+            }
+        ]
+    }
+}

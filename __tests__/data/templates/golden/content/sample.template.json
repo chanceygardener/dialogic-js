@@ -1,0 +1,304 @@
+{
+    "name": "sample",
+    "templates": {
+        "0.0-testNpLex": {
+            "forms": [
+                {
+                    "text": "[Np lex=$test_entity definiteness='DEFINITE' number='PLURAL' form='FORM_LONG'] are [Np lex=$test_entity form='FORM_SHORT' number='PLURAL' definiteness='INDEFINITE'] I find very shady. I wouldn't trust such [Np lex=$test_entity form='FORM_SHORT' number='SINGULAR' definiteness='INDEFINITE'], even if [Np lex=$test_entity definiteness='INDEFINITE' number='PLURAL' form='FORM_LONG'] are considered trustworthy, I wouldn't trust such [Np lex=$test_entity number='SINGULAR' form='FORM_SHORT' definiteness='INDEFINITE']."
+                }
+            ]
+        },
+        "_passSubEnvTest": {
+            "forms": [
+                {
+                    "text": "I got this value: ($firstValue) from an implicit env pass, and I got ($secondValue) there too."
+                }
+            ]
+        },
+        "0.0-testPassingWholeEnv": {
+            "forms": [
+                {
+                    "text": "[_passSubEnvTest _env=$_env]"
+                }
+            ]
+        },
+        "0.0-testPassingWholeEnvNonObj": {
+            "forms": [
+                {
+                    "text": "[_passSubEnvTest _env=$firstValue]"
+                }
+            ]
+        },
+        "0.0-testNpLexPerson":  {
+            "forms": [
+                {
+                    "text": "[Np lex=$test_entity] is an unrecognized saint"
+                }
+            ]
+        },
+         "0.0-testNpLexBeginsWithVowel":  {
+            "forms": [
+                {
+                    "text": "[Np lex=$test_entity definiteness='INDEFINITE' form='FORM_LONG' number='SINGULAR'] is not a good look for a knitting club."
+                }
+            ]
+        },
+        "_aOrAn": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "an",
+                    "conditions": [
+                        "$lex.begins_with_vowel_sound"
+                    ]
+                },
+                {
+                    "text": "a"
+                }
+            ]
+        },
+        "_nounSingOrPlur": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "[_nounSingOrPlurLong lex=$lex number=$number]",
+                    "conditions": [
+                        "$form == FORM_LONG"
+                    ]
+                },
+                {
+                    "text": "[_nounSingOrPlurShortForm lex=$lex number=$number]",
+                    "conditions": [
+                        "$form == FORM_SHORT"
+                    ]
+                }
+            ]
+        },
+        "_nounSingOrPlurLong": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "$lex.plural",
+                    "conditions": [
+                        "$number == PLURAL"
+                    ]
+                },
+                {
+                    "text": "$lex.singular"
+                }
+            ]
+        },
+        "_nounSingOrPlurShortForm": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "$lex.plural_short",
+                    "conditions": [
+                        "$number == PLURAL"
+                    ]
+                },
+                {
+                    "text": "$lex.singular_short"
+                }
+            ]
+        },
+        "_npDefDetRequired": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "the [_nounSingOrPlur lex=$lex number=$number form=$form]",
+                    "conditions": [
+                        "$definiteness == DEFINITE"
+                    ]
+                },
+                {
+                    "text": "some [_nounSingOrPlur lex=$lex number=$number form=$form]",
+                    "conditions": [
+                        "$number == PLURAL",
+                        "$definiteness == INDEFINITE"
+                    ]
+                },
+                {
+                    "text": "$lex.plural",
+                    "conditions": [
+                        "$number == PLURAL"
+                    ]
+                },
+                {
+                    "text": "[_aOrAn lex=$lex] [_nounSingOrPlur number=$number form=$form lex=$lex]"
+                }
+            ]
+        },
+        "Np": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "[_npDefDetRequired lex=$lex number=$number definiteness=$definiteness form=$form]",
+                    "conditions": [
+                        "$lex.requires_definite_determiner"
+                    ]
+                },
+                {
+                    "text": "$lex.text"
+                }
+            ]
+        },
+        "0.0-basicList": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "$sequence[0]",
+                    "conditions": [
+                        "{Length $sequence} == 1"
+                    ]
+                },
+                {
+                    "text": "$sequence[0], and [0.0-basicList sequence=$sequence[1:] conjunction=$conjunction]",
+                    "conditions": [
+                        "{Length $sequence} == 2",
+                        "{IsNull $conjunction}"
+                    ]
+                },
+                {
+                    "text": "$sequence[0], $conjunction [0.0-basicList sequence=$sequence[1:] conjunction=$conjunction]",
+                    "conditions": [
+                        "{Length $sequence} == 2"
+                    ]
+                },
+                {
+                    "text": "$sequence[0], [0.0-basicList sequence=sequence[1:] conjunction=$conjunction]"
+                }
+            ]
+        },
+        "testImport": {
+            "forms": [
+                {
+                    "text": "I come from another domain!"
+                }
+            ]
+        },
+
+        "testNullVar": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "The test variable was null!",
+                    "conditions": [
+                        "{IsNull $test_variable}"
+                    ]
+                },
+                {
+                    "text": "The test variable was not null"
+                }
+            ]
+        },
+
+        "testCompareDateTime": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "The target event happened before the source event!",
+                    "conditions": [
+                        "{CompareDateTime $target $source} == -1"
+                    ]
+                },
+                {
+                    "text": "The source event happened before the target event",
+                    "conditions": [
+                        "{CompareDateTime $target $source} == 1"
+                    ]
+                },
+                {
+                    "text": "The source and target events happened around the same time."
+                }
+            ]
+        },
+        "testNot": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "The variable was false",
+                    "conditions": [
+                        "{Not $var}"
+                    ]
+                },
+                {
+                    "text": "The variable was true"
+                }
+            ]
+        },
+        "testThreadTouched": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "The thread was touched",
+                    "conditions": [
+                        "{ThreadTouched 0.0}"
+                    ]
+                },
+                {
+                    "text": "The thread was not touched"
+                }
+            ]
+        },
+        "FindYourThing": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "I [_doOrDoNot val=$negated] know where to find your [_collection item_name=$item_name], [_locationOrFail location=$location].",
+                    "conditions": [
+                        "{Set $loc} && !$negated"
+                    ],
+                    "setVal": [
+                        {
+                            "type": "string",
+                            "value": "location_unknown"
+                        }
+                    ]
+                }
+            ]
+        },
+        "_doOrDoNot": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "don't",
+                    "conditions": [
+                        "$val"
+                    ]
+                },
+                {
+                    "text": "do",
+                    "conditions": []
+                }
+            ]
+        },
+        "_collection": {
+            "switch": false,
+            "forms": [
+                {
+                    "text": "$item_name",
+                    "conditions": []
+                },
+                {
+                    "text": "beloved {item_name}",
+                    "conditions": []
+                }
+            ]
+        },
+        "_locationOrFail": {
+            "switch": true,
+            "forms": [
+                {
+                    "text": "but I can't tell you where right now.",
+                    "condition": [
+                        "$location == 'FAIL'"
+                    ]
+                },
+                {
+                    "text": "it's at {location}"
+                }
+            ]
+        }
+    }
+}
