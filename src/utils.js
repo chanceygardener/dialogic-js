@@ -84,7 +84,7 @@ const resolveVar = (varName, env, attCalls = null) => {
   // console.log(`resolved as: ${val}`);
   /* throw an error if the
   value is not defined */
-  if (val === undefined) {
+  if (val === undefined && varName !== '_env') {
     console.log(`\n\tWARNING: ${varName} was undefined`);
     return null;
   }

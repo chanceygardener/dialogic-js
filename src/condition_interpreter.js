@@ -1,5 +1,8 @@
 // contains the logic for the interpreter
 // of the dialogic condition mini language
+const logger = require('bunyan').createLogger({
+  name: 'condition-interpreter',
+});
 const { boolStrings } = require('./utils');
 const History = require('./history');
 
@@ -237,7 +240,7 @@ const interpretObjects = (tokens) => {
         if ('keys' in groupedObjTokens[modifyingIndex] === false) groupedObjTokens[modifyingIndex].keys = [];
         // push slice to keys array in modifyingObject
         groupedObjTokens[modifyingIndex].keys.push(token);
-      } else { console.log(`Unrecognized object token type: ${JSON.stringify(token)}, type: ${token.type}`); }
+      } else { logger.info(`Unrecognized object token type: ${JSON.stringify(token)}, type: ${token.type}`); }
     } else {
       // if we encounter a non-object token, clear modifyingIndex
       groupedObjTokens.push(token);
@@ -355,10 +358,10 @@ const runFuncs = (tokens, env, functions) => {
       let out;
       if (!functions[funcName].arrayArg) {
         if (funcName === 'CompareDateTime') {
-          console.log(`Executing comparedatetime with the args below at tokens ${start} : ${end}`);
-          console.log(funcArgs);
-          console.log(`tokens: ${JSON.stringify(tokens)}`);
-          console.log(`env: ${JSON.stringify(env)}`);
+          logger.info(`Executing comparedatetime with the args below at tokens ${start} : ${end}`);
+          logger.info(funcArgs);
+          logger.info(`tokens: ${JSON.stringify(tokens)}`);
+          logger.info(`env: ${JSON.stringify(env)}`);
         }
         out = functions[funcName].function(env, ...funcArgs);
       } else {
@@ -430,16 +433,16 @@ const interpret = (tokens, env = {}, functions = {}) => {
   checkForObjComparisons(tokens);
   // invoke implicit object interpretation
   if (tokens.includes('CompareDateTime') || tokens.includes('ThreadTouched')) {
-    console.log(`tokens before object interpretation: ${JSON.stringify(tokens)}`);
-    tokens.forEach((tkn) => { console.log(`\t\tToken: "${JSON.stringify(tkn)}"" -- Type: ${typeof tkn} -- Constructor: ${tkn.constructor}`); });
+    logger.info(`tokens before object interpretation: ${JSON.stringify(tokens)}`);
+    tokens.forEach((tkn) => { logger.info(`\t\tToken: "${JSON.stringify(tkn)}"" -- Type: ${typeof tkn} -- Constructor: ${tkn.constructor}`); });
   }
-  // console.log(`tokens before object interpretation: ${JSON.stringify(tokens)}`);
+  // logger.info(`tokens before object interpretation: ${JSON.stringify(tokens)}`);
 
   const objInterpretedTokens = interpretObjects(tokens);
   if (objInterpretedTokens.includes('CompareDateTime') || objInterpretedTokens.includes('ThreadTouched')) {
-    console.log(`tokens after object interpretation: ${JSON.stringify(objInterpretedTokens)}`);
+    logger.info(`tokens after object interpretation: ${JSON.stringify(objInterpretedTokens)}`);
   }
-  // console.log(`tokens after object interpretation: ${JSON.stringify(objInterpretedTokens)}`);
+  // logger.info(`tokens after object interpretation: ${JSON.stringify(objInterpretedTokens)}`);
   // invoke recursive paren interpretation
   const parenInterpretedTokens = spliceAndInterpretParens(objInterpretedTokens, env);
   // interpret functions
@@ -509,16 +512,16 @@ const resolveVars = (expr, inputEnv = {}) => {
       // downstream variable realization processes, e.g., connecting
       // attribute selection statements to their original objects
       if (resolvedVal && resolvedVal.constructor === Object && resolvedVal.type === undefined) {
-        // console.log(`detected object variable: ${JSON.stringify(resolvedVal)}`);
+        // logger.info(`detected object variable: ${JSON.stringify(resolvedVal)}`);
         resolvedVal = { type: 'object', value: resolvedVal };
       } else if (resolvedVal && resolvedVal.constructor === Date) {
-        console.log(`Detected date value: ${resolvedVal}`);
+        logger.info(`Detected date value: ${resolvedVal}`);
         resolvedVal = { type: 'date', value: resolvedVal };
       }
 
       // args might be in this tok, or they could be seperated by a [key], so we need to check twice
       if (detectDotArg) {
-        // console.log(`DETECTDOTARG[0]: ${detectDotArg[0]}`);
+        // logger.info(`DETECTDOTARG[0]: ${detectDotArg[0]}`);
         const argVals = detectDotArg[0].split('.').filter((t) => (t !== '' ? t : null));
         const args = argVals.map((a) => ({
           type: 'key',

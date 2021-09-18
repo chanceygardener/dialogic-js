@@ -1,4 +1,7 @@
 // contains code for the Dialogic NLG realizer
+const logger = require('bunyan').createLogger({
+  name: 'realizer',
+});
 const { join } = require('path');
 const fs = require('fs');
 const {
@@ -148,7 +151,7 @@ class NlgRealizer {
         if (varName.substring(varName.length - 1) === ']') {
           varName = varName.substring(0, varName.length - 1);
         }
-        // console.log(`resolving detected variable ${varName}`);
+        // logger.info(`resolving detected variable ${varName}`);
 
         subEnv[kvPair.groups.key] = resolveVar(varName, upperEnv,
           compoundValueMatch.groups.calls);
@@ -265,7 +268,7 @@ class NlgRealizer {
     return false;
   }
 
-  evaluateVariantText(variant, env, domain) {
+  evaluateVariantText(variant, env, domain, calledFrom) {
     // Replace subtemplate invocations with their results
     let outText = replaceSlice(variant.text,
       getSubTemplateIndices(variant.text),
@@ -273,7 +276,7 @@ class NlgRealizer {
         const parsed = /^\[(?<subTemplate>(?<=\[)(?<templateName>[^\s\]]+)\s*(?<envCall>.*)?(?=\]))\]$/
           .exec(subString).groups;
         const subEnv = NlgRealizer.subEnvFromCall(parsed.envCall, env);
-        return this.executeTemplate(parsed.templateName, subEnv, domain).responseText;
+        return this.executeTemplate(parsed.templateName, subEnv, domain, calledFrom).responseText;
       });
     // then resolve variable invocations
     outText = outText.replace(/\(?\$(?<root>[^\[\]\.\)\s]+)(?<calls>(\[\d*:?\d*\]|\.\w+)+)?\)?/g,
@@ -290,9 +293,10 @@ class NlgRealizer {
     return outText;
   }
 
-  executeTemplate(handlerName, env, domain = null) {
+  executeTemplate(handlerName, env, domain = null, calledFrom = null) {
     // check to see if the realizer has loaded functions
-    console.log(`Executing ${handlerName} with env:\n\t${JSON.stringify(env)}`);
+    const calledFromInfo = calledFrom || 'Request (top level)';
+    logger.info(`Executing ${handlerName} with env: ${JSON.stringify(env)}`, `called from '${calledFromInfo}'`);
     if (env === undefined) {
       throw new Error(`No environment passed for ${handlerName}`);
     }
@@ -339,7 +343,7 @@ class NlgRealizer {
     }
 
     out.responseText = this.evaluateVariantText(
-      selectedVariant, env, handlerDomain,
+      selectedVariant, env, handlerDomain, handlerName,
     );
 
     // pull historyInstance out of env or init a new one if env doesn't contain it
@@ -347,7 +351,7 @@ class NlgRealizer {
     else out.historyInstance = new History();
     // record step in history if it's a top level template
     if (handlerName in this.schema) out.historyInstance.recordStep(handlerName);
-    console.log(`\t\tRealized ${handlerName} as:\n\t\t\t${out.responseText}`);
+    logger.info(`\t\tRealized ${handlerName} as: '${out.responseText}'`);
 
     return out;
   }
