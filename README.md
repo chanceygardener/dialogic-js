@@ -155,4 +155,4 @@ This allows dialogic to update the conversation history hierarchically, i.e., wi
 
  # Examples
 
- Coming soon
+ Simple examples of the protocol can be found in this repository at `__tests__/data/templates/golden`. See the `content` file for the logic itself implemented in the dialogic syntax.
