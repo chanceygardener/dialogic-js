@@ -109,7 +109,25 @@ const handleDialogflowRes = (content) => {
   return body;
 };
 
+const handleRasaNlgReq = (reqBody) => ({
+  templateName: reqBody.response,
+  env: {
+    arguments: reqBody.arguments,
+    tracker: reqBody.tracker,
+    channel: reqBody.channel,
+  },
+});
+
+const handleRasaNlgResp = (resBody) => {
+  const rasaOut = {
+    text: resBody.response,
+  };
+  return rasaOut;
+};
+
 module.exports = {
   handleDialogflowReq,
   handleDialogflowRes,
+  handleRasaNlgReq,
+  handleRasaNlgResp,
 };

@@ -77,7 +77,7 @@ const argIsValid = (envVal, argSpec) => {
 // BEGIN REALIZER CLASS
 
 class NlgRealizer {
-  constructor(logicPath) {
+  constructor(logicPath, configObj = null, configPath = null) {
     // read all the message sets from
     // file, validate them, and
     // aggregate them into two attributes
@@ -99,7 +99,10 @@ class NlgRealizer {
     this.schemaMap = schemaMap;
     this.schema = schema;
     // Function plugins for condition language
-    this.functions = importPlugins().functions;
+    this.functions = configObj.functions || importPlugins({
+      configObj,
+      configPath: configPath || './dialogic-config.js',
+    }).functions;
     this.history = new History();
   }
 

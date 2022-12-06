@@ -1,5 +1,8 @@
 const path = require('path');
 const { readFileSync } = require('fs');
+const logger = require('bunyan').createLogger({
+  name: 'config',
+});
 
 const supportedPluginTypes = ['function'];
 
@@ -13,6 +16,7 @@ const importPlugins = (configPath = './dialogic-config.js', configObj = null) =>
     console.log(`Dialogic config path: ${configPath}`);
     const configRaw = readFileSync(configPath, 'utf8');
     // eslint-disable-next-line no-eval
+    console.log(process.cwd());
     config = eval(configRaw);
   }
   const pluginsDir = '../modules/plugins';
@@ -39,6 +43,7 @@ const importPlugins = (configPath = './dialogic-config.js', configObj = null) =>
   // return function obj
   return {
     functions,
+    serverConfig: config.server,
   };
 };
 

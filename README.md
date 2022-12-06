@@ -3,9 +3,7 @@
 ## Overview
 The purpose of this project is to provide a framework to orchestrate parameters to be used to modulate speech output in a compositionally varied, hierarchical manner to create dynamic, varied, more human like speech. These templates can be used to vary speech style as a function of user sentiment analysis values, to produce correct linguistic morphological inflection, e.g., tense, number, etc., randomly bring up new topics according to configurable constraints, manage dynamic fallback response procedures, and more. Messages are encoded in JSON with a conditioning mini language to create custom logic in which
 
-## [Documentation](https://soulmachines.atlassian.net/l/c/QkF6DAFZ)
-Documentation can be found on [the Dialogic architecture Confluence page](https://soulmachines.atlassian.net/l/c/QkF6DAFZ).
-Docs are auto-generated from JSDoc blocks and automatically exported to Soul Machines Confluence on pushes to `staging` and `master`. New functionality should be documented inline with [JSDoc style blocks](https://jsdoc.app).
+Docs are auto-generated from JSDoc blocks.
 
 ## Realizer Class
 The main component of the Dialogic library is the realizer class, which orchestrates template logic and parameters from the NLU engine with which it works to provide a conversational interface, or from other sources. Its constructor is called with a single required argument, which is the file path leading to the message set directory (See the message sets section for more on this). The realizer contains the logic for running template executions, the specific procedures for which are encoded in the message set files. As such, the main method that will be used externally is  ```executeTemplate(templateName env)```
@@ -20,7 +18,7 @@ This library contains translator functions to turn a fulfillment request for dia
 
 These functions return a structure that can be passed to the realizer to generate an appropriate response. This structure contains the following fields:
 * params
-	* Parameters passed in the fulfillment request. This field should include the history structure [(TODO (CSB-454) add history to handleDialogflowReq)](https://soulmachines.atlassian.net/browse/CSB-454), from which position it can be operated on by the condition language, and any other parameter values passed along with the fulfillment request. The exact structure of these parameters will vary as a function of the NLU platform being used. For example, in Dialogflow, ```parameters``` will always include a structure called ```contexts```, the parameters of which can be accessed in the condition language via ```$contexts.<contextName>.<value>```.
+	* Parameters passed in the fulfillment request. This field should include the history structure, from which position it can be operated on by the condition language, and any other parameter values passed along with the fulfillment request. The exact structure of these parameters will vary as a function of the NLU platform being used. For example, in Dialogflow, ```parameters``` will always include a structure called ```contexts```, the parameters of which can be accessed in the condition language via ```$contexts.<contextName>.<value>```.
 * session
 	* The session ID, this is used internally by the realizer.
 * intent
@@ -36,7 +34,8 @@ Once the request has been handled, the realizer returns a structure with the fol
 This structure should then be passed to a response translator, also included in translators.js and are named "handle\<platformName\>Res." These functions return a valid fulfillment response structure expected by the NLU platform for which the specific response translator is implemented.
 
 ## Message Sets
-The Realizer consumes one or more message sets, which contain templates for the content and logic of a virtual agent's responses. These templates are consumed as a filepath leading to two directories, content and schema, which in turn contain one or more template files and corresponding argument schemas respectively. [TODO (CSB-437): include example lambda function in this repo].
+The Realizer consumes one or more message sets, which contain templates for the content and logic of a virtual agent's responses. These templates are consumed as a filepath leading to two directories, content and schema, which in turn contain one or more template files and corresponding argument schemas respectively. 
+
 ### Anatomy of a message set
 #### Template File
 This JSON file lives in the content directory directly beneath the path passed to the Realizer's constructor. This file contains two top level keys:
@@ -59,7 +58,7 @@ When the logic of a message template gets invoked, the realizer is passed an env
 ```{subTemplateName arg1=$arg1 arg2=$arg2}```
 
 Where the subtemplate will be invoked with an environment containing arguments corresponding to the parameter names as written in the subtemplate invocation. Both top level (i.e., those defined in the schema and corresponding to an intent) and helper templates can be invoked from other intents.
-* <b>NOTE:</b> Currently, subtemplates must be unique both within message sets <b>and across all</b> message sets for the moment. We will support duplicate subtemplate names <b>across</b> message sets upon the completion of [CSB-436](https://soulmachines.atlassian.net/browse/CSB-436)
+* <b>NOTE:</b> Currently, subtemplates must be unique both within message sets <b>and across all</b> message sets for the moment. We plan to eventually support duplicate subtemplate names <b>across</b> message sets.
 
 #### Schema File
 Schema files live in the "schema" directory directly beneath the root path passed to the realizer's constructor. This JSON file contains two top level keys:
@@ -78,7 +77,7 @@ The "conditions" field of a response form contains a list of statements that ope
 * <= : less than or equal to
 * \>= : greater than or equal to
 
-**Note:** As you may notice, we do not *currently* support the NOT operator (!) except for in the != comparison operator. Support for ! in all contexts is a known issue tracked in [CSB-441](https://soulmachines.atlassian.net/browse/CSB-441)
+**Note:** As you may notice, we do not *currently* support the NOT operator (!) except for in the != comparison operator. 
 ### Arithmetic Operators
 * \+ : addition
 * \- subtraction
@@ -149,3 +148,11 @@ This is a javascript file containing a config object which currently contains a 
 This allows dialogic to update the conversation history hierarchically, i.e., with knowledge not only of the linear path of individual dialog nodes, but also with the "threads" or "topics" each node is associated with. This is useful if, say, the user asks the conversational agent what they were recently talking about. Dialogic can, in this case, look through the "thread level" history and respond as a function of the thread as defined in the conversation design.
 ##### Format
  This field should be a valid regular expression with named capture groups "thread" and "nodeName"
+
+ # Web Server
+
+ The dialogic app is packaged as a web server and can be run from the command line with `npm run serve`
+
+ # Examples
+
+ Coming soon

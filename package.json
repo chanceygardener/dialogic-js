@@ -17,15 +17,9 @@
     "docker-test": "npm run docker-setup && npm run docker-run && npm run docker-cleanup && echo ok || echo test suite failed, run npm run docker-cleanup to remove container!",
     "docker-dev": "nodemon --exec \"npm run docker-test\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint && npm test"
-    }
-  },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.soulmachines.com/cs-conv-eng/dialogic-js.git"
+    "url": "https://github.com/chanceygardener/dialogic-js.git"
   },
   "keywords": [
     "dialogic",
